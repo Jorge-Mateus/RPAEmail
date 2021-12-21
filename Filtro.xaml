@@ -38,7 +38,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="24">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="48">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -63,9 +63,10 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Flowchart DisplayName="Filtro" sap:VirtualizedContainerService.HintSize="634,636" sap2010:WorkflowViewState.IdRef="Flowchart_1">
+  <Flowchart DisplayName="Filtro" sap:VirtualizedContainerService.HintSize="944,705" sap2010:WorkflowViewState.IdRef="Flowchart_1">
     <Flowchart.Variables>
       <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="arquivos" />
     </Flowchart.Variables>
@@ -75,12 +76,14 @@
         <av:Point x:Key="ShapeLocation">290,2.5</av:Point>
         <av:Size x:Key="ShapeSize">60,75</av:Size>
         <av:PointCollection x:Key="ConnectorLocation">320,77.5 320,107.5 332.641666666667,107.5 332.641666666667,127.5</av:PointCollection>
+        <x:Double x:Key="Width">910</x:Double>
+        <x:Double x:Key="Height">669</x:Double>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <Flowchart.StartNode>
-      <x:Reference>__ReferenceID3</x:Reference>
+      <x:Reference>__ReferenceID6</x:Reference>
     </Flowchart.StartNode>
-    <FlowDecision x:Name="__ReferenceID3" Condition="[in_email.Subject = &quot;Documento de Identidade&quot;]" DisplayName="Documento de identidade" sap:VirtualizedContainerService.HintSize="144,87" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+    <FlowDecision x:Name="__ReferenceID6" Condition="[in_email.Subject = &quot;Documento de Identidade&quot;]" DisplayName="Documento de identidade" sap:VirtualizedContainerService.HintSize="144,87" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -101,6 +104,7 @@
               <x:String x:Key="FalseLabel">Não</x:String>
               <x:String x:Key="TrueLabel">Sim</x:String>
               <av:PointCollection x:Key="TrueConnector">60.5,300 30.5,300 30.5,394.5 120,394.5 120,424.5</av:PointCollection>
+              <av:PointCollection x:Key="FalseConnector">161.5,300 191.5,300 191.5,236.5 538.25,236.5 538.25,266.5</av:PointCollection>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <FlowDecision.True>
@@ -144,11 +148,88 @@
               </FlowStep.Next>
             </FlowStep>
           </FlowDecision.True>
+          <FlowDecision.False>
+            <FlowDecision x:Name="__ReferenceID3" DisplayName="Sem Anexo?" sap:VirtualizedContainerService.HintSize="71,87" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
+              <FlowDecision.Condition>
+                <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_email.Attachments.count = 0" />
+              </FlowDecision.Condition>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <av:Point x:Key="ShapeLocation">520.5,266.5</av:Point>
+                  <av:Size x:Key="ShapeSize">71,87</av:Size>
+                  <x:String x:Key="FalseLabel">Não</x:String>
+                  <x:String x:Key="TrueLabel">Sim</x:String>
+                  <av:PointCollection x:Key="TrueConnector">520.5,310 340,310 340,424.5</av:PointCollection>
+                  <av:PointCollection x:Key="FalseConnector">591.5,310 780,310 780,424.5</av:PointCollection>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <FlowDecision.True>
+                <FlowStep x:Name="__ReferenceID4">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <av:Point x:Key="ShapeLocation">240,424.5</av:Point>
+                      <av:Size x:Key="ShapeSize">200,51</av:Size>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Envio_Email workflow" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Envio_Email.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_TD">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_email.From.Address" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_subject">
+                        <Literal x:TypeArguments="x:String">Error: Documento de identidade</Literal>
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_body">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Caro (a) &quot; + in_email.From.DisplayName + &quot;, &quot; + &quot;Você não adicionou arquivo de identidade.&quot;" />
+                      </InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:InvokeWorkflowFile>
+                </FlowStep>
+              </FlowDecision.True>
+              <FlowDecision.False>
+                <FlowStep x:Name="__ReferenceID5">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <av:Point x:Key="ShapeLocation">680,424.5</av:Point>
+                      <av:Size x:Key="ShapeSize">200,51</av:Size>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Envio_Email workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Envio_Email.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_TD">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_email.From.Address" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_subject">
+                        <Literal x:TypeArguments="x:String">Error: Documento de identidade</Literal>
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_body">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Caro (a) &quot; + in_email.From.DisplayName + &quot;, &quot; + &quot;Você enviou mais de um anexo de identidade.&quot;" />
+                      </InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:InvokeWorkflowFile>
+                </FlowStep>
+              </FlowDecision.False>
+            </FlowDecision>
+          </FlowDecision.False>
         </FlowDecision>
       </FlowDecision.True>
     </FlowDecision>
     <x:Reference>__ReferenceID0</x:Reference>
     <x:Reference>__ReferenceID1</x:Reference>
     <x:Reference>__ReferenceID2</x:Reference>
+    <x:Reference>__ReferenceID3</x:Reference>
+    <x:Reference>__ReferenceID4</x:Reference>
+    <x:Reference>__ReferenceID5</x:Reference>
   </Flowchart>
 </Activity>
